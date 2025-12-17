@@ -1,13 +1,16 @@
 import { Code2, Brain } from "lucide-react";
 
 const hardSkills = [
+  { name: "Linux", level: 95 },
   { name: "Java", level: 90 },
+  { name: "HTML + CSS + JavaScript", level: 90 },
+  { name: "Git + Github", level: 90 },
+  { name: "React + ReactNative + Tailwind", level: 85 },
   { name: "C", level: 80 },
-  { name: "Python", level: 85 },
-  { name: "OCaml", level: 70 },
-  { name: "HTML + CSS + JS", level: 90 },
-  { name: "React", level: 85 },
-  { name: "Git + Github", level: 88 },
+  { name: "C#", level: 80 },
+  { name: "Python", level: 80 },
+  { name: "SQL", level: 75 },
+  { name: "OCaml", level: 50 },
 ];
 
 const softSkills = [
@@ -17,6 +20,10 @@ const softSkills = [
   { name: "Teamwork", icon: "🤝" },
   { name: "Focus", icon: "🎯" },
   { name: "Dedication", icon: "⭐" },
+  { name: "Front-end Development", icon: "💻" },
+  { name: "Back-end Development", icon: "🛠️" },
+  { name: "Integration", icon: "🔗" },
+  { name: "Web Development", icon: "🌐" },
 ];
 
 const Skills = () => {

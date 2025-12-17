@@ -10,8 +10,8 @@ const contactInfo = [
   {
     icon: Mail,
     label: "Email",
-    value: "d.agostinho@campus.fct.unl.pt",
-    href: "mailto:d.agostinho@campus.fct.unl.pt",
+    value: "danielagostinho2004@gmail.com",
+    href: "mailto:danielagostinho2004@gmail.com",
   },
   {
     icon: Linkedin,
@@ -36,7 +36,7 @@ const Contact = () => {
           <div className="w-20 h-1 bg-primary mx-auto rounded-full mb-6" />
           <p className="text-muted-foreground max-w-xl mx-auto">
             I'm always open to discussing new opportunities, interesting projects, or just having a chat.
-            Feel free to reach out!
+            Feel free to reach out! (Especially if you are a recruiter 😉)
           </p>
         </div>
 

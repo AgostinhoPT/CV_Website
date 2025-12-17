@@ -8,7 +8,7 @@ const Footer = () => {
           © {new Date().getFullYear()} Daniel Dias Agostinho. All rights reserved.
         </p>
         <p className="text-sm text-muted-foreground flex items-center gap-1">
-          Built with <Heart className="w-4 h-4 text-primary" /> using React
+          Built with <Heart className="w-4 h-4 text-primary" /> using React and Lovable!
         </p>
       </div>
     </footer>

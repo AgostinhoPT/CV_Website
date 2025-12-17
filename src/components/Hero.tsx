@@ -15,7 +15,7 @@ const Hero = () => {
         </p>
         
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-foreground mb-6 opacity-0 animate-fade-in" style={{ animationDelay: '0.4s' }}>
-          Daniel Dias Agostinho
+          Daniel Agostinho
         </h1>
         
         <p className="text-lg md:text-xl text-muted-foreground max-w-2xl mx-auto mb-8 opacity-0 animate-fade-in" style={{ animationDelay: '0.6s' }}>

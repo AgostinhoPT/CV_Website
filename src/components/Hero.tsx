@@ -1,4 +1,4 @@
-import { ArrowDown } from "lucide-react";
+import { ArrowDown, Download } from "lucide-react";
 
 const Hero = () => {
   return (
@@ -35,6 +35,14 @@ const Hero = () => {
             className="inline-flex items-center gap-2 px-6 py-3 border border-border bg-card rounded-lg font-medium hover:bg-secondary transition-colors"
           >
             View Experience
+          </a>
+          <a
+            href="/Daniel_Agostinho_CV.pdf"
+            download="Daniel_Agostinho_CV.pdf"
+            className="inline-flex items-center gap-2 px-6 py-3 border border-primary/50 bg-primary/10 text-primary rounded-lg font-medium hover:bg-primary/20 transition-colors"
+          >
+            <Download className="w-4 h-4" />
+            Download CV
           </a>
         </div>
       </div>

@@ -11,7 +11,7 @@ const Hero = () => {
 
       <div className="relative z-10 text-center max-w-4xl mx-auto">
         <p className="text-primary font-mono text-sm md:text-base mb-4 opacity-0 animate-fade-in" style={{ animationDelay: '0.2s' }}>
-          Hello, I'm
+          Hello! I'm
         </p>
 
         <h1 className="text-4xl md:text-6xl lg:text-7xl font-bold text-foreground mb-6 opacity-0 animate-fade-in" style={{ animationDelay: '0.4s' }}>
@@ -26,7 +26,7 @@ const Hero = () => {
         <div className="flex flex-wrap gap-4 justify-center opacity-0 animate-fade-in" style={{ animationDelay: '0.8s' }}>
           <div className="flex flex-wrap gap-4 justify-center">
             <a
-              href="/resume.pdf"
+              href="/cv/cv.pdf"
               download
               className="inline-flex items-center justify-center w-48 px-6 py-3 border border-border bg-card rounded-lg font-medium hover:bg-secondary transition-colors"
             >
@@ -37,7 +37,7 @@ const Hero = () => {
               href="#contact"
               className="inline-flex items-center justify-center w-48 px-6 py-3 bg-primary text-primary-foreground rounded-lg font-medium hover:opacity-90 transition-opacity"
             >
-              Get in Touch
+              Get in Contact
             </a>
 
             <a

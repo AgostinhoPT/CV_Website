@@ -32,7 +32,7 @@ const Contact = () => {
     <section id="contact" className="py-24 px-4">
       <div className="max-w-4xl mx-auto">
         <div className="text-center mb-16">
-          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Get in Touch</h2>
+          <h2 className="text-3xl md:text-4xl font-bold text-foreground mb-4">Get in Contact</h2>
           <div className="w-20 h-1 bg-primary mx-auto rounded-full mb-6" />
           <p className="text-muted-foreground max-w-xl mx-auto">
             I'm always open to discussing new opportunities, interesting projects, or just having a chat.

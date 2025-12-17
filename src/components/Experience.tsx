@@ -7,7 +7,7 @@ const experiences = [
     location: "Caparica",
     period: "2025 - Present",
     description:
-      "At the end of my first semester of my 3rd year at university, I joined Innova as a junior developer. Since then, I have had the opportunity to work on two projects: the Innova web app and the Terra Molhada app.",
+      "At the end of my first semester of my 3rd year at university, I joined Innova as a junior developer. Since then, I have had the opportunity to work on many projects as a front-end and integration developer.",
     current: true,
   },
   {

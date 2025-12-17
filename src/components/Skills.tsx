@@ -12,7 +12,7 @@ const hardSkills = [
 
 const softSkills = [
   { name: "Critical Thinking", icon: "🧠" },
-  { name: "Pressure Control", icon: "💪" },
+  { name: "Control under Pressure", icon: "💪" },
   { name: "Versatility", icon: "🔄" },
   { name: "Teamwork", icon: "🤝" },
   { name: "Focus", icon: "🎯" },

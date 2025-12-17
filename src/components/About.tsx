@@ -31,7 +31,7 @@ const About = () => {
                 </div>
                 <div>
                   <h3 className="font-semibold text-foreground mb-1">Location</h3>
-                  <p className="text-muted-foreground">Serra de Santo António, Alcanena, Portugal</p>
+                  <p className="text-muted-foreground">Alcanena, Santarém, Portugal</p>
                 </div>
               </div>
             </div>
@@ -43,7 +43,7 @@ const About = () => {
                 </div>
                 <div>
                   <h3 className="font-semibold text-foreground mb-1">Education</h3>
-                  <p className="text-muted-foreground">Master's in Computer Science, FCT Nova</p>
+                  <p className="text-muted-foreground">Bachelor's in Computer Science, FCT Nova</p>
                 </div>
               </div>
             </div>
@@ -55,7 +55,7 @@ const About = () => {
                 </div>
                 <div>
                   <h3 className="font-semibold text-foreground mb-1">Current Role</h3>
-                  <p className="text-muted-foreground">Junior Developer at Consultoria Innova</p>
+                  <p className="text-muted-foreground">Junior Developer at Innova Consulting</p>
                 </div>
               </div>
             </div>

@@ -4,12 +4,14 @@ const education = [
   {
     degree: "Master's in Computer Science",
     institution: "FCT Nova",
+    specialization: "Major in Information Systems • Minor in Systems Security",
     status: "In Progress",
     completed: false,
   },
   {
     degree: "Bachelor's in Computer Science",
     institution: "FCT Nova",
+    specialization: null,
     status: "Completed",
     completed: true,
   },
@@ -50,7 +52,10 @@ const Education = () => {
                 </div>
 
                 <h3 className="text-xl font-semibold text-foreground mb-2">{edu.degree}</h3>
-                <p className="text-primary font-medium mb-2">{edu.institution}</p>
+                <p className="text-primary font-medium mb-1">{edu.institution}</p>
+                {edu.specialization && (
+                  <p className="text-sm text-muted-foreground mb-2">{edu.specialization}</p>
+                )}
                 <p className="text-sm text-muted-foreground">{edu.status}</p>
               </div>
             </div>

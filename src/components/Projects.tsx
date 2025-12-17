@@ -2,26 +2,47 @@ import { ExternalLink, Github, Folder } from "lucide-react";
 
 const projects = [
   {
-    title: "Project Name 1",
-    description: "A brief description of what this project does and the technologies used.",
-    technologies: ["React", "TypeScript", "Tailwind"],
-    githubUrl: "https://github.com/yourusername/project1",
+    title: "This CV Website",
+    description: "A personal CV website built to showcase my skills, projects, and contact information. Initial build done with lovable and improved and customized over time manually by me.",
+    technologies: ["React", "TypeScript", "Tailwind CSS"],
+    githubUrl: "https://github.com/AgostinhoPT/CV_Website",
     liveUrl: null,
   },
   {
-    title: "Project Name 2",
-    description: "Another project description highlighting key features and your role.",
-    technologies: ["Python", "FastAPI", "PostgreSQL"],
-    githubUrl: "https://github.com/yourusername/project2",
-    liveUrl: "https://project2-demo.com",
-  },
-  {
-    title: "Project Name 3",
-    description: "Description of a third meaningful project you've worked on.",
-    technologies: ["Node.js", "Express", "MongoDB"],
-    githubUrl: "https://github.com/yourusername/project3",
+    title: "Bigodify Youtube",
+    description: "Browser Extension that adds my cat bigodes to every youtube thumbnail. Created as a fun project to practice on a fork of an existing open-source extension.",
+    technologies: ["JavaScript", "HTML", "Batch Scripting", "Chrome Extensions API"],
+    githubUrl: "https://github.com/AgostinhoPT/Bigodify-Youtube",
     liveUrl: null,
   },
+  {
+    title: "Implementing Data Privacy",
+    description: "This project involves implementing and subsequently attacking various data privacy protections, including simple de-identification, k-anonymity, and Laplace differential privacy middleware, to evaluate their effectiveness.",
+    technologies: ["Java", "Python", "SQL", "Privacy Algorithms"],
+    githubUrl: "https://github.com/AgostinhoPT/PrivSis_Project1",
+    liveUrl: null,
+  },
+  {
+    title: "Tor - The Safer Path",
+    description: "This project focuses on implementing and simulating a new Tor path selection algorithm that uses a probabilistic weighting mechanism to avoid nodes within the same country, aiming to enhance security against country-level adversaries without compromising network usability.",
+    technologies: ["Java", "Python", "Tor Protocol"],
+    githubUrl: "https://github.com/AgostinhoPT/PrivSis_Project2",
+    liveUrl: null,
+  },
+  {
+    title: "Mouse Wiggler",
+    description: "A simple application that prevents the computer from going to sleep by simulating small mouse movements at regular intervals. Useful for keeping the system awake during long tasks.",
+    technologies: ["C", "Batch Scripting", "Shell Scripting"],
+    githubUrl: "https://github.com/AgostinhoPT/Wiggler",
+    liveUrl: null,
+  },
+  {
+    title: "MyLinkedIn",
+    description: "A LinkedIn clone website built for Systems Process Modeling that adds existing features and new features, like an AI assistant as a proof of concept and practice of several types of software achitectural modeling.",
+    technologies: ["Typescript", "HTML", "CSS", "System Design"],
+    githubUrl: "https://github.com/navez03/MyLinkedIn",
+    liveUrl: null,
+  }
 ];
 
 const Projects = () => {

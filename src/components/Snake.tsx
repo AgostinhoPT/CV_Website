@@ -76,7 +76,7 @@ const Snake = () => {
             const newSnake = [newHead, ...prevSnake];
 
             if (newHead.x === food.x && newHead.y === food.y) {
-                setScore((s) => s + 10);
+                setScore((s) => s + 1);
                 setFood(getRandomFood(newSnake));
             } else {
                 newSnake.pop();
@@ -161,7 +161,7 @@ const Snake = () => {
         const roundedClass = getSegmentStyle(index, { x, y });
 
         if (index === 0) {
-            return `bg-green-400 ${roundedClass} z-10`;
+            return `bg-green-600 ${roundedClass} z-10`;
         }
 
         return `bg-green-600 ${roundedClass} opacity-90`;

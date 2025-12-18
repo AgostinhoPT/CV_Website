@@ -1,11 +1,13 @@
 import { useState } from 'react';
-import { Gamepad2, Ghost } from "lucide-react";
+import { Gamepad2, Ghost, Bomb, Apple} from "lucide-react";
 import Tetris from './Tetris';
 import Snake from './Snake';
+import Minesweeper from './Minesweeper';
 
 const gamesList = [
     { id: 'tetris', name: 'Tetris', icon: Gamepad2, component: <Tetris /> },
-    { id: 'snake', name: 'Snake', icon: Ghost, component: <Snake /> },
+    { id: 'snake', name: 'Snake', icon: Apple, component: <Snake /> },
+    { id: 'minesweeper', name: 'Minesweeper', icon: Bomb, component: <Minesweeper /> },
     { id: 'coming_soon', name: 'More Games Coming Soon', icon: Ghost, component: <div className="h-96 flex items-center justify-center text-muted-foreground">Coming Soon...</div> },
 ];
 

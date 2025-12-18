@@ -1,5 +1,5 @@
-import { useState, useEffect, useCallback } from 'react';
-import { RefreshCw, Flag, Bomb, Trophy, Timer, Settings, X, Trash2 } from 'lucide-react';
+import { useState, useEffect } from 'react';
+import { RefreshCw, Flag, Bomb, Trophy, Timer, Settings, X, Trash2, Shovel } from 'lucide-react';
 
 type Cell = {
   x: number;
@@ -10,7 +10,6 @@ type Cell = {
   count: number;
 };
 
-// Helper to get neighbors of a cell
 const getNeighbors = (x: number, y: number, rows: number, cols: number) => {
   const neighbors = [];
   for (let dx = -1; dx <= 1; dx++) {
@@ -27,22 +26,15 @@ const getNeighbors = (x: number, y: number, rows: number, cols: number) => {
 };
 
 const createBoard = (rows: number, cols: number, mines: number): Cell[][] => {
-  // Initialize empty board
   let board: Cell[][] = Array(rows).fill(null).map((_, y) =>
     Array(cols).fill(null).map((_, x) => ({
-      x,
-      y,
-      isMine: false,
-      isRevealed: false,
-      isFlagged: false,
-      count: 0,
+      x, y, isMine: false, isRevealed: false, isFlagged: false, count: 0,
     }))
   );
 
-  // Place Mines
   let minesPlaced = 0;
   const maxMines = rows * cols - 1; 
-  const actualMines = Math.min(mines, maxMines); // Safety check
+  const actualMines = Math.min(mines, maxMines);
 
   while (minesPlaced < actualMines) {
     const x = Math.floor(Math.random() * cols);
@@ -53,7 +45,6 @@ const createBoard = (rows: number, cols: number, mines: number): Cell[][] => {
     }
   }
 
-  // Calculate Counts
   for (let y = 0; y < rows; y++) {
     for (let x = 0; x < cols; x++) {
       if (!board[y][x].isMine) {
@@ -70,12 +61,12 @@ const createBoard = (rows: number, cols: number, mines: number): Cell[][] => {
 };
 
 const Minesweeper = () => {
-  // Config State
   const [config, setConfig] = useState({ rows: 10, cols: 10, mines: 15 });
   const [draftConfig, setDraftConfig] = useState(config);
   const [showSettings, setShowSettings] = useState(false);
+  const [isFlagMode, setIsFlagMode] = useState(false);
+  const [showModal, setShowModal] = useState(false);
 
-  // Game State
   const [board, setBoard] = useState<Cell[][]>([]);
   const [gameOver, setGameOver] = useState(false);
   const [gameWon, setGameWon] = useState(false);
@@ -83,7 +74,6 @@ const Minesweeper = () => {
   const [isRunning, setIsRunning] = useState(false);
   const [flagsUsed, setFlagsUsed] = useState(0);
 
-  // Initialize board on load
   useEffect(() => {
     setBoard(createBoard(config.rows, config.cols, config.mines));
   }, []);
@@ -102,9 +92,9 @@ const Minesweeper = () => {
   }, [isRunning, gameOver, gameWon]);
 
   useEffect(() => {
-    if (gameOver) {
-        setIsRunning(false);
-        return;
+    if (gameOver || gameWon) { 
+        setIsRunning(false); 
+        return; 
     } 
     if (board.length === 0) return;
 
@@ -113,30 +103,43 @@ const Minesweeper = () => {
       if (cell.isRevealed) revealedCount++;
     }));
 
-    const totalCells = config.rows * config.cols;
-    if (revealedCount === totalCells - config.mines) {
+    if (revealedCount === (config.rows * config.cols) - config.mines) {
       setGameWon(true);
       setIsRunning(false);
       
+      setBoard(prev => prev.map(row => row.map(cell => 
+          cell.isMine ? { ...cell, isRevealed: true } : cell
+      )));
+
       if (bestTime === null || timer < bestTime) {
         setBestTime(timer);
         localStorage.setItem('minesweeper-best-time', timer.toString());
       }
     }
-  }, [board, gameOver, timer, bestTime, config]);
+  }, [board, gameOver, timer, bestTime, config, gameWon]);
+
+  useEffect(() => {
+      if (gameOver || gameWon) {
+          const t = setTimeout(() => setShowModal(true), 1800); // 1.8 second delay
+          return () => clearTimeout(t);
+      } else {
+          setShowModal(false);
+      }
+  }, [gameOver, gameWon]);
 
   const revealCell = (x: number, y: number) => {
     if (gameOver || gameWon || board[y][x].isFlagged || board[y][x].isRevealed) return;
-
     if (!isRunning) setIsRunning(true);
 
     const newBoard = [...board];
     const cell = newBoard[y][x];
 
     if (cell.isMine) {
-      cell.isRevealed = true;
-      setGameOver(true);
+      newBoard.forEach(row => row.forEach(c => {
+          if (c.isMine) c.isRevealed = true;
+      }));
       setBoard(newBoard);
+      setGameOver(true);
       return;
     }
 
@@ -145,7 +148,6 @@ const Minesweeper = () => {
       if (newBoard[cy][cx].isRevealed || newBoard[cy][cx].isFlagged) return;
 
       newBoard[cy][cx].isRevealed = true;
-
       if (newBoard[cy][cx].count === 0) {
         getNeighbors(cx, cy, config.rows, config.cols).forEach(n => floodFill(n.x, n.y));
       }
@@ -158,13 +160,20 @@ const Minesweeper = () => {
   const toggleFlag = (e: React.MouseEvent, x: number, y: number) => {
     e.preventDefault();
     if (gameOver || gameWon || board[y][x].isRevealed) return;
-
     if (!isRunning) setIsRunning(true);
 
     const newBoard = [...board];
     newBoard[y][x].isFlagged = !newBoard[y][x].isFlagged;
     setBoard(newBoard);
     setFlagsUsed(prev => newBoard[y][x].isFlagged ? prev + 1 : prev - 1);
+  };
+
+  const handleCellClick = (e: React.MouseEvent, x: number, y: number) => {
+    if (isFlagMode) {
+      toggleFlag(e, x, y);
+    } else {
+      revealCell(x, y);
+    }
   };
 
   const restart = (newConfig = config) => {
@@ -174,6 +183,8 @@ const Minesweeper = () => {
     setTimer(0);
     setIsRunning(false);
     setFlagsUsed(0);
+    setIsFlagMode(false);
+    setShowModal(false);
   };
 
   const resetHighScore = () => {
@@ -182,15 +193,12 @@ const Minesweeper = () => {
   };
 
   const applySettings = () => {
-    // Basic validation constraints
-    const r = Math.max(10, Math.min(20, draftConfig.rows)); // Limit rows 10-20
-    const c = Math.max(10, Math.min(15, draftConfig.cols)); // Limit cols 10-15 (to fit mobile)
-    
+    const r = Math.max(8, Math.min(20, draftConfig.rows)); 
+    const c = Math.max(8, Math.min(20, draftConfig.cols)); 
     const maxMines = (r * c) - 1;
     const m = Math.max(1, Math.min(maxMines, draftConfig.mines));
 
     const validatedConfig = { rows: r, cols: c, mines: m };
-    
     setConfig(validatedConfig);
     setDraftConfig(validatedConfig);
     restart(validatedConfig);
@@ -208,161 +216,127 @@ const Minesweeper = () => {
   };
 
   return (
-    <div className="flex flex-col items-center gap-4">
+    <div className="flex flex-col items-center gap-4 w-full px-2">
       <h2 className="text-4xl font-black tracking-widest mb-2 drop-shadow-md cursor-default select-none text-red-500">
         MINES
       </h2>
 
       {/* Stats Bar */}
-      <div className="flex justify-between w-full max-w-[340px] text-sm font-mono font-bold text-primary mb-2 px-2">
-        <div className="flex flex-col">
-           <span className="flex items-center gap-1 text-xs text-muted-foreground">
+      <div className="flex justify-between w-full max-w-md text-sm font-mono font-bold text-primary mb-2 px-2 bg-secondary/30 rounded-lg py-2">
+        <div className="flex flex-col items-center w-1/3">
+           <span className="flex items-center gap-1 text-[10px] md:text-xs text-muted-foreground">
              <Bomb className="w-3 h-3" /> MINES
           </span>
-          <span className="text-xl">{config.mines - flagsUsed}</span>
+          <span className="text-lg md:text-xl">{config.mines - flagsUsed}</span>
         </div>
 
-        <div className="flex flex-col items-center">
-            <span className="flex items-center gap-1 text-xs text-muted-foreground">
+        <div className="flex flex-col items-center w-1/3 border-x border-primary/10">
+            <span className="flex items-center gap-1 text-[10px] md:text-xs text-muted-foreground">
              <Timer className="w-3 h-3" /> TIME
           </span>
-          <span className="text-xl">{timer}s</span>
+          <span className="text-lg md:text-xl">{timer}s</span>
         </div>
 
-        <div className="flex flex-col items-end">
-          <span className="flex items-center gap-1 text-xs text-muted-foreground">
+        <div className="flex flex-col items-center w-1/3">
+          <span className="flex items-center gap-1 text-[10px] md:text-xs text-muted-foreground">
              <Trophy className="w-3 h-3 text-yellow-500" /> BEST
           </span>
-          <span className="text-xl text-yellow-500">{bestTime === null ? '--' : `${bestTime}s`}</span>
+          <span className="text-lg md:text-xl text-yellow-500">{bestTime === null ? '--' : `${bestTime}s`}</span>
         </div>
       </div>
 
       {/* Game Board Container */}
-      <div className="bg-secondary/50 p-1 rounded-lg border-2 border-primary/20 relative">
-        
-        {/* Game Over / Win Overlay */}
-        {(gameOver || gameWon) && (
+      <div className="w-full max-w-md bg-secondary/50 p-1 rounded-lg border-2 border-primary/20 relative">
+    
+        {showModal && (
           <div className="absolute inset-0 z-20 flex items-center justify-center bg-background/80 rounded-lg backdrop-blur-sm">
-             <div className={`font-black text-3xl animate-bounce border-4 px-6 py-4 rounded-xl bg-background shadow-2xl drop-shadow-lg transform rotate-[-5deg] ${gameWon ? 'text-green-500 border-green-500' : 'text-red-500 border-red-500'}`}>
+             <div className={`font-black text-2xl md:text-3xl animate-bounce border-4 px-6 py-4 rounded-xl bg-background shadow-2xl drop-shadow-lg transform rotate-[-5deg] ${gameWon ? 'text-green-500 border-green-500' : 'text-red-500 border-red-500'}`}>
                {gameWon ? 'YOU WON!' : 'GAME OVER'}
              </div>
           </div>
         )}
 
-        {/* Settings Overlay */}
         {showSettings && (
            <div className="absolute inset-0 z-30 flex items-center justify-center bg-background/95 rounded-lg backdrop-blur-sm p-4">
              <div className="flex flex-col gap-4 w-full max-w-xs">
                 <div className="flex justify-between items-center border-b border-border pb-2">
-                    <h3 className="font-bold text-lg">Game Settings</h3>
+                    <h3 className="font-bold text-lg">Settings</h3>
                     <button onClick={() => setShowSettings(false)}><X className="w-5 h-5" /></button>
                 </div>
-                
                 <div className="space-y-3">
                     <div className="flex flex-col gap-1">
-                        <label className="text-xs text-muted-foreground">Rows (10-20)</label>
-                        <input 
-                            type="number" 
-                            className="bg-card border border-border rounded p-2 text-sm"
-                            value={draftConfig.rows}
-                            onChange={(e) => setDraftConfig({...draftConfig, rows: parseInt(e.target.value) || 0})} 
-                        />
+                        <label className="text-xs text-muted-foreground">Rows (8-20)</label>
+                        <input type="number" className="bg-card border border-border rounded p-2 text-sm" value={draftConfig.rows} onChange={(e) => setDraftConfig({...draftConfig, rows: parseInt(e.target.value) || 0})} />
                     </div>
                     <div className="flex flex-col gap-1">
-                        <label className="text-xs text-muted-foreground">Columns (10-15)</label>
-                        <input 
-                            type="number" 
-                            className="bg-card border border-border rounded p-2 text-sm"
-                            value={draftConfig.cols}
-                            onChange={(e) => setDraftConfig({...draftConfig, cols: parseInt(e.target.value) || 0})} 
-                        />
+                        <label className="text-xs text-muted-foreground">Columns (8-20)</label>
+                        <input type="number" className="bg-card border border-border rounded p-2 text-sm" value={draftConfig.cols} onChange={(e) => setDraftConfig({...draftConfig, cols: parseInt(e.target.value) || 0})} />
                     </div>
                     <div className="flex flex-col gap-1">
                         <label className="text-xs text-muted-foreground">Mines</label>
-                        <input 
-                            type="number" 
-                            className="bg-card border border-border rounded p-2 text-sm"
-                            value={draftConfig.mines}
-                            onChange={(e) => setDraftConfig({...draftConfig, mines: parseInt(e.target.value) || 0})} 
-                        />
+                        <input type="number" className="bg-card border border-border rounded p-2 text-sm" value={draftConfig.mines} onChange={(e) => setDraftConfig({...draftConfig, mines: parseInt(e.target.value) || 0})} />
                     </div>
                 </div>
-
-                <button 
-                    onClick={applySettings}
-                    className="bg-primary text-primary-foreground p-2 rounded font-bold hover:opacity-90 transition-opacity"
-                >
-                    Apply & Restart
-                </button>
+                <button onClick={applySettings} className="bg-primary text-primary-foreground p-2 rounded font-bold hover:opacity-90">Apply & Restart</button>
              </div>
            </div>
         )}
 
+        {/* RESPONSIVE GRID */}
         <div 
-          className="grid gap-px bg-primary/20 border border-white/5"
-          style={{ 
-            gridTemplateColumns: `repeat(${config.cols}, minmax(0, 1fr))`,
-            maxWidth: '90vw'
-          }}
+          className="grid gap-px bg-primary/20 border border-white/5 w-full"
+          style={{ gridTemplateColumns: `repeat(${config.cols}, minmax(0, 1fr))` }}
         >
           {board.map((row, y) => row.map((cell, x) => (
              <button
                key={`${x}-${y}`}
-               onClick={() => revealCell(x, y)}
-               onContextMenu={(e) => toggleFlag(e, x, y)}
+               onClick={(e) => handleCellClick(e, x, y)} 
+               onContextMenu={(e) => toggleFlag(e, x, y)} 
                className={`
-                 w-8 h-8 flex items-center justify-center font-bold text-sm transition-colors duration-75
+                 aspect-square w-full flex items-center justify-center font-bold p-0.5 overflow-hidden transition-colors duration-75
+                 text-[10px] md:text-sm
                  ${cell.isRevealed 
                     ? 'bg-background/40 cursor-default' 
                     : 'bg-secondary hover:bg-secondary/80 border-b-2 border-r-2 border-black/20'
                  }
-                 ${cell.isRevealed && cell.isMine ? 'bg-red-500/50' : ''}
+                 ${
+                    cell.isRevealed && cell.isMine 
+                        ? (gameWon ? 'bg-green-500/20' : 'bg-red-500/50') 
+                        : ''
+                 }
                `}
              >
                {cell.isRevealed ? (
-                 cell.isMine ? <Bomb className="w-5 h-5 text-red-500 animate-pulse" /> : 
+                 cell.isMine ? (
+                    <Bomb className={`w-3/5 h-3/5 ${gameWon ? 'text-green-500' : 'text-red-500 animate-pulse'}`} />
+                 ) : 
                  cell.count > 0 ? <span className={getNumberColor(cell.count)}>{cell.count}</span> : ''
                ) : (
-                 cell.isFlagged ? <Flag className="w-4 h-4 text-red-500" fill="currentColor" /> : ''
+                 cell.isFlagged ? <Flag className="w-3/5 h-3/5 text-red-500" fill="currentColor" /> : ''
                )}
              </button>
           )))}
         </div>
       </div>
 
-      {/* Controls */}
-      <div className="flex flex-col items-center justify-center text-center text-sm text-muted-foreground">
-          Left Click: Reveal <br/> Right Click: Flag
+      <div className="flex flex-col items-center justify-center text-center text-xs text-muted-foreground">
+          {isFlagMode ? 'FLAG MODE: Tap to Flag' : 'REVEAL MODE: Tap to Dig'} <br/>
+          (Use the flag button to switch modes) <br/>
+          (Left-Click to Dig / Right-click to flag on desktop)
       </div>
 
       <div className="flex gap-4 mt-2">
          <button 
-           title="Restart Game" 
-           onClick={() => restart()} 
-           className="p-3 bg-card border rounded-full hover:bg-primary/20 transition-colors"
+           title={isFlagMode ? "Switch to Dig Mode" : "Switch to Flag Mode"}
+           onClick={() => setIsFlagMode(!isFlagMode)} 
+           className={`p-3 border rounded-full transition-colors ${isFlagMode ? 'bg-red-500 text-white border-red-600' : 'bg-card hover:bg-primary/20'}`}
          >
-           <RefreshCw className="w-6 h-6" />
+           {isFlagMode ? <Flag className="w-6 h-6 fill-current" /> : <Shovel className="w-6 h-6" />}
          </button>
 
-         <button 
-           title="Settings" 
-           onClick={() => {
-               setDraftConfig(config); // Reset draft to current config
-               setShowSettings(true);
-           }} 
-           className="p-3 bg-card border rounded-full hover:bg-primary/20 transition-colors"
-         >
-           <Settings className="w-6 h-6" />
-         </button>
-
-         {/* Reset High Score Button */}
-         <button 
-           title="Reset Best Time" 
-           onClick={resetHighScore} 
-           className="p-3 bg-card border rounded-full hover:bg-red-500/10 text-red-500 border-red-500/20 transition-colors"
-         >
-           <Trash2 className="w-6 h-6" />
-         </button>
+         <button title="Restart" onClick={() => restart()} className="p-3 bg-card border rounded-full hover:bg-primary/20 transition-colors"><RefreshCw className="w-6 h-6" /></button>
+         <button title="Settings" onClick={() => { setDraftConfig(config); setShowSettings(true); }} className="p-3 bg-card border rounded-full hover:bg-primary/20 transition-colors"><Settings className="w-6 h-6" /></button>
+         <button title="Reset Best" onClick={resetHighScore} className="p-3 bg-card border rounded-full hover:bg-red-500/10 text-red-500 border-red-500/20 transition-colors"><Trash2 className="w-6 h-6" /></button>
       </div>
     </div>
   );

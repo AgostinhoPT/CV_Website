@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback } from 'react';
-import { RefreshCw, Flag, Bomb, Trophy, Timer, Settings, X } from 'lucide-react';
+import { RefreshCw, Flag, Bomb, Trophy, Timer, Settings, X, Trash2 } from 'lucide-react';
 
 type Cell = {
   x: number;
@@ -176,6 +176,11 @@ const Minesweeper = () => {
     setFlagsUsed(0);
   };
 
+  const resetHighScore = () => {
+    localStorage.removeItem('minesweeper-best-time');
+    setBestTime(null);
+  };
+
   const applySettings = () => {
     // Basic validation constraints
     const r = Math.max(10, Math.min(20, draftConfig.rows)); // Limit rows 10-20
@@ -326,6 +331,10 @@ const Minesweeper = () => {
       </div>
 
       {/* Controls */}
+      <div className="flex flex-col items-center justify-center text-center text-sm text-muted-foreground">
+          Left Click: Reveal <br/> Right Click: Flag
+      </div>
+
       <div className="flex gap-4 mt-2">
          <button 
            title="Restart Game" 
@@ -345,10 +354,15 @@ const Minesweeper = () => {
          >
            <Settings className="w-6 h-6" />
          </button>
-      </div>
-      
-      <div className="text-center text-xs text-muted-foreground mt-2">
-          Left Click: Reveal • Right Click: Flag
+
+         {/* Reset High Score Button */}
+         <button 
+           title="Reset Best Time" 
+           onClick={resetHighScore} 
+           className="p-3 bg-card border rounded-full hover:bg-red-500/10 text-red-500 border-red-500/20 transition-colors"
+         >
+           <Trash2 className="w-6 h-6" />
+         </button>
       </div>
     </div>
   );

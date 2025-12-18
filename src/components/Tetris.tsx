@@ -3,7 +3,7 @@ import { RefreshCw, ArrowDown, ArrowLeft, ArrowRight, RotateCw, Trophy, Trash2 }
 
 const BOARD_WIDTH = 10;
 const BOARD_HEIGHT = 20;
-const TICK_RATE = 800;
+const INITIAL_TICK_RATE = 800; // Starting speed
 
 const TETROMINOS = {
     I: { shape: [[1, 1, 1, 1]], color: 'bg-cyan-500' },
@@ -28,8 +28,9 @@ const Tetris = () => {
     const [activePiece, setActivePiece] = useState(getRandomTetromino());
     const [gameOver, setGameOver] = useState(false);
     const [score, setScore] = useState(0);
+    
+    const [tickRate, setTickRate] = useState(INITIAL_TICK_RATE);
 
-    // FIX 1: Create a ref to store the latest 'move' function
     const savedMove = useRef<((x: number, y: number) => void) | null>(null);
 
     const [highScore, setHighScore] = useState(() => {
@@ -73,7 +74,15 @@ const Tetris = () => {
         const cleanRows = Array.from({ length: linesCleared }, () => Array(BOARD_WIDTH).fill(0));
 
         if (linesCleared > 0) {
-            setScore(prev => prev + (linesCleared * 100));
+            const newScore = score + (linesCleared * 100);
+            setScore(newScore);
+
+            // Increase speed based on score
+            // Speed increases by 50ms for every 500 points
+            // Capped at 100ms (fastest speed)
+            const speedIncrease = Math.floor(newScore / 500) * 50;
+            const newRate = Math.max(100, INITIAL_TICK_RATE - speedIncrease);
+            setTickRate(newRate);
         }
 
         setBoard([...cleanRows, ...clearedBoard]);
@@ -92,10 +101,10 @@ const Tetris = () => {
         } else if (y > 0) {
             mergePiece();
         }
-    }, [activePiece, board, gameOver]);
+    }, [activePiece, board, gameOver, tickRate]);
 
     const resetHighScore = () => {
-        localStorage.removeItem('snake-high-score');
+        localStorage.removeItem('tetris-high-score');
         setHighScore(0);
     };
 
@@ -109,9 +118,9 @@ const Tetris = () => {
                 savedMove.current(0, 1);
             }
         };
-        const interval = setInterval(tick, TICK_RATE);
+        const interval = setInterval(tick, tickRate);
         return () => clearInterval(interval);
-    }, []);
+    }, [tickRate]); 
 
     const rotate = () => {
         if (gameOver) return;
@@ -126,6 +135,7 @@ const Tetris = () => {
         setActivePiece(getRandomTetromino());
         setGameOver(false);
         setScore(0);
+        setTickRate(INITIAL_TICK_RATE); // Reset speed
     }
 
     useEffect(() => {

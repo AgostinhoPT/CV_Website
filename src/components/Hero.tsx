@@ -26,8 +26,10 @@ const Hero = () => {
         <div className="flex flex-wrap gap-4 justify-center opacity-0 animate-fade-in" style={{ animationDelay: '0.8s' }}>
           <div className="flex flex-wrap gap-4 justify-center">
             <a
-              href="/cv/cv.pdf"
-              download
+              href="/CV_Website/cv.pdf"
+              download="Daniel_Agostinho_CV.pdf"
+              target="_blank"
+              rel="noopener noreferrer"
               className="inline-flex items-center justify-center w-48 px-6 py-3 border border-border bg-card rounded-lg font-medium hover:bg-secondary transition-colors"
             >
               Download CV

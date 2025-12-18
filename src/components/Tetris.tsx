@@ -1,5 +1,5 @@
 import { useState, useEffect, useCallback, useRef } from 'react';
-import { RefreshCw, ArrowDown, ArrowLeft, ArrowRight, RotateCw, Trophy } from 'lucide-react';
+import { RefreshCw, ArrowDown, ArrowLeft, ArrowRight, RotateCw, Trophy, Trash2 } from 'lucide-react';
 
 const BOARD_WIDTH = 10;
 const BOARD_HEIGHT = 20;
@@ -94,13 +94,15 @@ const Tetris = () => {
         }
     }, [activePiece, board, gameOver]);
 
-    // FIX 2: Keep the ref updated with the latest move function
+    const resetHighScore = () => {
+        localStorage.removeItem('snake-high-score');
+        setHighScore(0);
+    };
+
     useEffect(() => {
         savedMove.current = move;
     }, [move]);
 
-    // FIX 3: Run the timer only ONCE. It calls whatever is currently in savedMove.
-    // This prevents the timer from resetting every time you press a key.
     useEffect(() => {
         const tick = () => {
             if (savedMove.current) {
@@ -109,7 +111,7 @@ const Tetris = () => {
         };
         const interval = setInterval(tick, TICK_RATE);
         return () => clearInterval(interval);
-    }, []); 
+    }, []);
 
     const rotate = () => {
         if (gameOver) return;
@@ -197,8 +199,8 @@ const Tetris = () => {
                 ))}
             </div>
 
-            {/* Controls */}
-            <div className="flex flex-col items-center justify-center text-center">
+            {/* Controls Text */}
+            <div className="flex flex-col items-center justify-center text-center text-sm text-muted-foreground">
                 R - Restart game <br />
                 Arrows - Move / Rotate
             </div>
@@ -219,6 +221,14 @@ const Tetris = () => {
                 </div>
                 <button title="Rotate" onClick={rotate} className="p-3 bg-card border rounded-full hover:bg-primary/20 transition-colors"><RotateCw className="w-6 h-6" /></button>
             </div>
+
+            <button
+                title="Reset High Score"
+                onClick={resetHighScore}
+                className="p-3 bg-card border rounded-full hover:bg-red-500/10 text-red-500 border-red-500/20 transition-colors"
+            >
+                <Trash2 className="w-6 h-6" />
+            </button>
         </div>
     );
 };

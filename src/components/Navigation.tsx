@@ -10,6 +10,7 @@ const navItems = [
   { label: "Languages", href: "#languages" },
   { label: "Hobbies", href: "#hobbies" },
   { label: "Contact", href: "#contact" },
+  { label: "Arcade", href: "#arcade" },
 ];
 
 const Navigation = () => {

@@ -9,6 +9,7 @@ import Languages from "@/components/Languages";
 import Hobbies from "@/components/Hobbies";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import Games from "@/components/Games";
 
 const Index = () => {
   return (
@@ -24,6 +25,7 @@ const Index = () => {
         <Languages />
         <Hobbies />
         <Contact />
+        <Games />
       </main>
       <Footer />
     </div>

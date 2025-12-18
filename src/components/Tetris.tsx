@@ -1,4 +1,4 @@
-import { useState, useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback, useRef } from 'react';
 import { RefreshCw, ArrowDown, ArrowLeft, ArrowRight, RotateCw, Trophy } from 'lucide-react';
 
 const BOARD_WIDTH = 10;
@@ -28,6 +28,9 @@ const Tetris = () => {
     const [activePiece, setActivePiece] = useState(getRandomTetromino());
     const [gameOver, setGameOver] = useState(false);
     const [score, setScore] = useState(0);
+
+    // FIX 1: Create a ref to store the latest 'move' function
+    const savedMove = useRef<((x: number, y: number) => void) | null>(null);
 
     const [highScore, setHighScore] = useState(() => {
         const saved = localStorage.getItem('tetris-high-score');
@@ -91,6 +94,23 @@ const Tetris = () => {
         }
     }, [activePiece, board, gameOver]);
 
+    // FIX 2: Keep the ref updated with the latest move function
+    useEffect(() => {
+        savedMove.current = move;
+    }, [move]);
+
+    // FIX 3: Run the timer only ONCE. It calls whatever is currently in savedMove.
+    // This prevents the timer from resetting every time you press a key.
+    useEffect(() => {
+        const tick = () => {
+            if (savedMove.current) {
+                savedMove.current(0, 1);
+            }
+        };
+        const interval = setInterval(tick, TICK_RATE);
+        return () => clearInterval(interval);
+    }, []); 
+
     const rotate = () => {
         if (gameOver) return;
         const rotated = activePiece.shape[0].map((_: any, i: number) => activePiece.shape.map((row: any) => row[i]).reverse());
@@ -105,13 +125,6 @@ const Tetris = () => {
         setGameOver(false);
         setScore(0);
     }
-
-    useEffect(() => {
-        const interval = setInterval(() => move(0, 1), TICK_RATE);
-        return () => clearInterval(interval);
-    }, [move]);
-
-
 
     useEffect(() => {
         const handleKey = (e: KeyboardEvent) => {
@@ -156,7 +169,7 @@ const Tetris = () => {
             {/* Game Board with Overlay */}
             <div className="bg-secondary/50 p-1 rounded-lg border-2 border-primary/20 relative">
 
-                {/* GAME OVER OVERLAY (Moved Here) */}
+                {/* GAME OVER OVERLAY */}
                 {gameOver && (
                     <div className="absolute inset-0 z-20 flex items-center justify-center bg-background/80 rounded-lg backdrop-blur-sm">
                         <div className="text-red-500 font-black text-3xl animate-bounce border-4 border-red-500 px-6 py-4 rounded-xl bg-background shadow-2xl drop-shadow-lg transform rotate-[-5deg]">

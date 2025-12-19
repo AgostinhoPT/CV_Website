@@ -19,7 +19,7 @@ const Jumpscare = () => {
     setTimeout(() => {
       setIsActive(false);
       inputBuffer.current = ""; // Reset buffer
-    }, 800);
+    }, 900);
   };
 
   useEffect(() => {

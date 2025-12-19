@@ -1,12 +1,10 @@
 import { useState, useEffect, useRef } from 'react';
 
-// You can replace these with your own local files (e.g., "/freddy.gif")
 const FREDDY_GIF = "/CV_Website/foxy-jumpscare.gif";
 const SCREAM_AUDIO = "/CV_Website/scream.mp3";
 
 const Jumpscare = () => {
   const [isActive, setIsActive] = useState(false);
-  // We use a ref for the input buffer to avoid re-attaching event listeners
   const inputBuffer = useRef(""); 
 
   const triggerJumpscare = () => {

@@ -1,73 +1,186 @@
-\documentclass[10pt,a4paper,sans]{moderncv}
+%-------------------------
+% Resume in Latex
+% Author : Sourabh Bajaj
+% Website: https://github.com/sb2nov/resume
+% License : MIT
+%------------------------
 
-% ModernCV themes
-\moderncvstyle{classic} % Options: 'casual', 'classic', 'banking', 'oldstyle', 'fancy'
-\moderncvcolor{blue}    % Options: 'blue', 'orange', 'green', 'red', 'purple', 'grey', 'black'
+\documentclass[letterpaper,11pt]{article}
 
-% Character encoding
-\usepackage[utf8]{inputenc}
-\usepackage[portuguese]{babel}
-\usepackage[scale=0.80]{geometry}
+\usepackage{latexsym}
+\usepackage[empty]{fullpage}
+\usepackage{titlesec}
+\usepackage{marvosym}
+\usepackage[usenames,dvipsnames]{color}
+\usepackage{verbatim}
+\usepackage{enumitem}
+\usepackage[pdftex]{hyperref}
+\usepackage{fancyhdr}
 
-% Personal Data
-\firstname{Daniel}
-\familyname{Dias Agostinho}
-\title{Engenharia Informática} % Derived from summary
-\address{Serra de Santo António}{Alcanena, Portugal}
-\mobile{(+351) 912 559 675}
-\email{danielagostinho2004@gmail.com}
-\social[linkedin]{daniel-dias-agostinho}
 
-% \photo[64pt][0.4pt]{photo.jpg} % Uncomment to add your photo
+\pagestyle{fancy}
+\fancyhf{} % clear all header and footer fields
+\fancyfoot{}
+\renewcommand{\headrulewidth}{0pt}
+\renewcommand{\footrulewidth}{0pt}
 
-%----------------------------------------------------------------------------------
-%            CONTENT
-%----------------------------------------------------------------------------------
+% Adjust margins
+\addtolength{\oddsidemargin}{-0.375in}
+\addtolength{\evensidemargin}{-0.375in}
+\addtolength{\textwidth}{1in}
+\addtolength{\topmargin}{-.5in}
+\addtolength{\textheight}{1.0in}
+
+\urlstyle{same}
+
+\raggedbottom
+\raggedright
+\setlength{\tabcolsep}{0in}
+
+% Sections formatting
+\titleformat{\section}{
+  \vspace{-4pt}\scshape\raggedright\large
+}{}{0em}{}[\color{black}\titlerule \vspace{-5pt}]
+
+%-------------------------
+% Custom commands
+\newcommand{\resumeItem}[2]{
+  \item\small{
+    \textbf{#1}{: #2 \vspace{-2pt}}
+  }
+}
+
+\newcommand{\resumeSubheading}[4]{
+  \vspace{-1pt}\item
+    \begin{tabular*}{0.97\textwidth}{l@{\extracolsep{\fill}}r}
+      \textbf{#1} & #2 \\
+      \parbox[t]{0.65\textwidth}{\textit{\small #3}} & \textit{\small #4} \\
+    \end{tabular*}\vspace{-5pt}
+}
+
+\newcommand{\resumeSubItem}[2]{\resumeItem{#1}{#2}\vspace{-4pt}}
+
+\renewcommand{\labelitemii}{$\circ$}
+
+\newcommand{\resumeSubHeadingListStart}{\begin{itemize}[leftmargin=*]}
+\newcommand{\resumeSubHeadingListEnd}{\end{itemize}}
+\newcommand{\resumeItemListStart}{\begin{itemize}}
+\newcommand{\resumeItemListEnd}{\end{itemize}\vspace{-5pt}}
+
+%-------------------------------------------
+%%%%%%  CV STARTS HERE  %%%%%%%%%%%%%%%%%%%%%%%%%%%%
+
+
 \begin{document}
-\makecvtitle
 
-\section{Perfil}
-\cvitem{}{Estudante de Engenharia Informática na FCT Nova. Tenho como ambição aprender competências valiosas para a minha progressão como programador.}
+%----------HEADING-----------------
+\begin{tabular*}{\textwidth}{l@{\extracolsep{\fill}}r}
+  \textbf{\Large Daniel Dias Agostinho} & Email : \href{mailto:danielagostinho2004@gmail.com}{danielagostinho2004@gmail.com}\\
+Phone number : (+351) 912 559 675 \\
+  LinkedIn : \href{https://www.linkedin.com/in/daniel-dias-agostinho/}{linkedin.com/in/daniel-dias-agostinho} & \\
+\end{tabular*}
 
-\section{Experiência Profissional}
-\cventry{2025--Pres.}{Junior Developer}{Consultoria Innova}{Caparica}{}{
-\begin{itemize}
-    \item Desenvolvimento da Web App da Innova.
-    \item Desenvolvimento da App "Terra Molhada".
-    \item Desenvolvimento do BackOffice da "Terra Molhada".
-\end{itemize}}
 
-\cventry{2025}{Estágio (Projeto ADC)}{Legau}{Caparica}{}{
-\begin{itemize}
-    \item Experiência em ambiente de trabalho real e metodologia Agile.
-    \item Aprendizagem e refinamento de novas tecnologias da empresa (Foco em IA).
-\end{itemize}}
+%-----------EDUCATION-----------------
+\section{Education}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {FCT Nova -- Masters}{Caparica}
+      {Computer Science Engineering \\ (Major in Information Systems | Minor in Secure and Dependable Systems)}{2026 -- est. 2028}
+    \resumeSubheading
+      {FCT Nova -- Bachelors}{Caparica}
+      {Computer Science Engineering}{2022 -- 2026}
+  \resumeSubHeadingListEnd
 
-\cventry{2021--2024}{Servente de Mesa}{Pizzaria Vieira}{}{}{
-\begin{itemize}
-    \item Desenvolvimento de soft skills: trabalho em equipa, foco e calma sob pressão.
-    \item Atendimento a clientes de diversas nacionalidades e treino de novos empregados.
-\end{itemize}}
 
-\section{Formação Académica}
-\cventry{A Concluir em 2026}{Licenciatura em Engenharia Informática}{FCT Nova}{Caparica}{}{Aquisição de conhecimentos sólidos na área, realização de projetos em grupo e domínio de diversas tecnologias.}
+%-----------EXPERIENCE-----------------
+\section{Experience}
+  \resumeSubHeadingListStart
 
-\section{Outras Experiências}
-\cventry{2022}{Universidade de Verão}{Universidade de Coimbra}{}{}{Bolsa atribuída para o Curso de Engenharia Eletrotécnica. Experiência valiosa de adaptação a novos desafios e ambientes.}
+    \resumeSubheading
+      {Innova Consulting}{Caparica}
+      {Junior Developer}{2025 -- 2026}
+      \resumeItemListStart
+        \resumeItem{Innova Web App}
+          {First contact with front-end development and React, also the first time I worked with Figma.}
+        \resumeItem{Terra Molhada App}
+          {Used Tailwind Frameworks and started doing back-end integration, used Android Studio for app simulation and testing.}
+        \resumeItem{Terra Molhada Back Office}
+          {Used Tailwind and Typescript to create a back office with strong back-end integration, also got some experience with testing APIs using Postman and Dbeaver to test the database.}
+      \resumeItemListEnd
 
-\section{Competências Técnicas (Hard Skills)}
-\cvitem{Linguagens}{Java, C, Python, OCaml}
-\cvitem{Web}{HTML, CSS, JavaScript, React}
-\cvitem{Ferramentas}{Git, Github}
+    \resumeSubheading
+      {Legau}{Caparica}
+      {Internship}{2025 (Feb -- Aug) }
+      \resumeItemListStart
+        \resumeItem{Work environment}
+          {Experience in a real-world remote work environment and Agile methodology.}
+        \resumeItem{Technologies}
+          {Developed web scraping pipelines in Python and gained experience with Docker and Postman. Stored the collected data in Elasticsearch for use as a knowledge base by the company chatbot, accessed through LangChain.}
+      \resumeItemListEnd
 
-\section{Competências Pessoais (Soft Skills)}
-\cvitem{Skills}{Pensamento crítico, Controlo sob pressão, Versatilidade}
+    \resumeSubheading
+      {Pizzaria Vieira}{}
+      {Waiter}{2021 -- 2024}
+      \resumeItemListStart
+        \resumeItem{Customer service}
+          {Learned work ethic, communication skills, teamwork and how to handle stress and pressure.}
+      \resumeItemListEnd
 
-\section{Idiomas}
-\cvitemwithcomment{Português}{Nativo}{}
-\cvitemwithcomment{Inglês}{Fluente}{}
+  \resumeSubHeadingListEnd
 
-\section{Hobbies}
-\cvitem{}{Fazer exercício, Andar de Mota, Tocar Saxofone}
+%-----------PROJECTS-----------------
+\section{Projects}
+  \resumeSubHeadingListStart
+    \resumeSubheading
+      {Personal Website}{}
+      {React and TailwindCSS}{}
+      \resumeItemListStart
+        \resumeItem{Overview}
+          {Created a personal website to showcase my projects and skills, hosted at GitHub Pages.}
+      \resumeItemListEnd
 
+    \resumeSubheading
+      {MotoMaps App}{}
+      {Flutter, Dart and MySQL}{}
+      \resumeItemListStart
+        \resumeItem{Overview}
+          {Developed a mobile application that provides motorcycle riders with a platform to register scenic routes}
+        \resumeItem{Technologies}
+          {Used Flutter and Dart for cross-platform mobile development, and MySQL for database management.}
+      \resumeItemListEnd
+  \resumeSubHeadingListEnd
+
+
+%-----------SKILLS-----------------
+\section{Technical Skills}
+ \resumeSubHeadingListStart
+   \item{
+     \textbf{Languages}{: Java, C, Python, OCaml}
+   }
+   \item {
+     \textbf{Databases}{: MySQL, PostgreSQL, MongoDB, SQLite}
+   }
+   \item {
+     \textbf{Web Development}{: HTML, CSS, JavaScript, React, Typescript, TailwindCSS, TailwindReact, Flutter}
+   }
+   \item{
+     \textbf{Tools}{: Git, GitHub, Docker, Linux, Windows, VS Code, IntelliJ, Eclipse, Postman, Figma, Dbeaver}
+   }
+ \resumeSubHeadingListEnd
+
+
+%-----------LANGUAGES-----------------
+\section{Languages}
+ \resumeSubHeadingListStart
+   \item{
+     \textbf{Portuguese}{: Native Speaker}
+   }
+   \item {
+     \textbf{English}{: C1 (Advanced)}
+   }
+ \resumeSubHeadingListEnd
+
+
+%-------------------------------------------
 \end{document}
